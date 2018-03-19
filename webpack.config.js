@@ -13,8 +13,15 @@ const PurifyCSSPlugin   = require('purifycss-webpack');
 const bootstrapEntryPoints = require('./webpack.bootstrap.config');
 
 const appPaths = {
-	src : path.join(__dirname, 'src'),
-	dist: path.join(__dirname, 'dist')
+	src      : path.join(__dirname, 'src'),
+	img      : path.join(__dirname, 'src/images'),
+	bootstrap: path.join(__dirname, 'src/bootstrap'),
+	dist     : path.join(__dirname, 'dist')
+};
+
+const filePaths = {
+	index: appPaths.src + '/index.html',
+	login: appPaths.src + '/login.html'
 };
 
 console.log(process.env.NODE_ENV);
@@ -43,7 +50,13 @@ const cssDev = [
 const cssProd = ExtractTextPlugin.extract({
 	fallback: 'style-loader',
 	use     : [
-		'css-loader',
+		{
+			loader : 'css-loader',
+			options: {
+				localIdentName: 'purify_[hash:base64:5]',
+				modules       : true
+			}
+		},
 		'sass-loader',
 		{
 			loader : 'postcss-loader',
@@ -52,7 +65,7 @@ const cssProd = ExtractTextPlugin.extract({
 					return [require('autoprefixer')];
 				}
 			}
-		},	
+		},
 		{
 			loader : 'sass-resources-loader',
 			options: {
@@ -88,16 +101,18 @@ const serverConfig = isProd ? servProd : servDev;
 
 const devtoolConfig = isProd ? 'inline' : 'cheap-eval-source-map ';
 
-
 const bootstrapConfig = isProd
 	? bootstrapEntryPoints.prod
-	:                   bootstrapEntryPoints.dev;
+	:  bootstrapEntryPoints.dev;
 
 module.exports = {
 	entry: {
 		app             : appPaths.src + '/app.js',
-		jqueryValidation: ['jquery-validation', 'jquery-validation-unobtrusive'],
-		bootstrap       : bootstrapConfig
+		jqueryValidation: [
+			'jquery-validation',
+			'jquery-validation-unobtrusive'
+		],
+		bootstrap: bootstrapConfig
 	},
 	output: {
 		path    : appPaths.dist,
@@ -172,7 +187,7 @@ module.exports = {
 		}),
 		new HtmlWebpackPlugin({
 			title   : 'Web template',
-			template: appPaths.src + '\\index.html',
+			template: filePaths.index,
 			favicon : appPaths.src + '\\images\\favicon.ico',
 			minify  : {
 				collapseWhitespace: isProd,
@@ -196,7 +211,7 @@ module.exports = {
 			purifyOptions: {
 				info     : true,
 				minify   : isProd,
-				whitelist: [ '*:not*' ]
+				whitelist: ['*purify*']
 			}
 		})
 	]

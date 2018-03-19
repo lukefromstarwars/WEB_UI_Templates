@@ -9,5 +9,7 @@
         ".vscode"     : true
     }
 ,
-"vsicons.presets.angular": false
+"vsicons.presets.angular": false,
+"editor.tabSize"         : 4,
+"prettier.singleQuote"   : true
 }
