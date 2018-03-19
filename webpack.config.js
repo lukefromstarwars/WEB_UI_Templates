@@ -19,13 +19,19 @@ const appPaths = {
 	dist     : path.join(__dirname, 'dist')
 };
 
+const fileNames = {
+	index: 'index.html',
+	login: 'login.html'
+};
+
 const filePaths = {
-	index: appPaths.src + '/index.html',
-	login: appPaths.src + '/login.html'
+	index: appPaths.src + '\\' + fileNames.index,
+	login: appPaths.src + '\\' + fileNames.login
 };
 
 console.log(process.env.NODE_ENV);
 console.log(appPaths.src);
+console.log(filePaths.login);
 
 const cssDev = [
 	'style-loader',
@@ -103,7 +109,7 @@ const devtoolConfig = isProd ? 'inline' : 'cheap-eval-source-map ';
 
 const bootstrapConfig = isProd
 	? bootstrapEntryPoints.prod
-	:  bootstrapEntryPoints.dev;
+	:                     bootstrapEntryPoints.dev;
 
 module.exports = {
 	entry: {
@@ -186,15 +192,28 @@ module.exports = {
 			Util           : 'exports-loader?Util!bootstrap/js/dist/util'
 		}),
 		new HtmlWebpackPlugin({
-			title   : 'Web template',
-			template: filePaths.index,
+			title   : 'Welcome',
+			template: appPaths.src + '\\' + fileNames.index,
+			filename: fileNames.index,
 			favicon : appPaths.src + '\\images\\favicon.ico',
 			minify  : {
-				collapseWhitespace: isProd,
+				collapseWhitespace: false,
 				minifyJS          : isProd,
 				minifyCSS         : isProd
 			},
-			hash      : isProd,
+			// hash      : isProd,
+			showErrors: !isProd
+		}),
+		new HtmlWebpackPlugin({
+			title   : 'Login',
+			template: appPaths.src + '\\' + fileNames.login,
+			filename: fileNames.login,
+			minify  : {
+				collapseWhitespace: false,
+				minifyJS          : isProd,
+				minifyCSS         : isProd
+			},
+			// hash      : isProd,
 			showErrors: !isProd
 		}),
 		new ExtractTextPlugin({
