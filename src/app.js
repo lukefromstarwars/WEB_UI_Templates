@@ -1,3 +1,1 @@
-import css from './app.scss';
-
-console.log('test');
+import './app.scss';

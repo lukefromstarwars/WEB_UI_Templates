@@ -22,8 +22,18 @@ console.log(appPaths.src);
 
 const cssDev = [
 	'style-loader',
-	'css-loader?sourceMap',
-	'postcss-loader',
+	'css-loader',
+	{
+		loader : 'postcss-loader',
+		options: {
+			plugins: function () {
+				return [
+					require('precss'),
+					require('autoprefixer')
+				];
+			}
+		}
+	},
 	'sass-loader',
 	{
 		loader : 'sass-resources-loader',
@@ -75,24 +85,26 @@ const servProd = {
 };
 
 // SET CONFIG
-const cssConfig     = isProd ? cssProd : cssDev;
-const serverConfig  = isProd ? servProd : servDev;
-const devtoolConfig = isProd ? 'inline' : 'cheap-eval-source-map';
+const cssConfig    = isProd ? cssProd : cssDev;
+const serverConfig = isProd ? servProd : servDev;
 
 const bootstrapConfig = isProd
 	? bootstrapEntryPoints.prod
-	:   bootstrapEntryPoints.dev;
+	:                             bootstrapEntryPoints.dev;
 
 module.exports = {
 	entry: {
-		app      : appPaths.src + '\\app.js',
-		bootstrap: bootstrapConfig
+		app             : appPaths.src + '/app.js',
+		jqueryValidation: ['jquery-validation', 'jquery-validation-unobtrusive'],
+		bootstrap       : bootstrapConfig
+		// jqueryValidation: ['jquery-validation', 'jquery-validation-unobtrusive'],
+		// app             : appPaths.src + '/app.js'
 	},
 	output: {
 		path    : appPaths.dist,
 		filename: 'js/[name].bundle.js'
 	},
-	devtool  : devtoolConfig,
+	// devtool  : devtoolConfig,
 	devServer: serverConfig,
 	module   : {
 		rules: [
@@ -101,25 +113,28 @@ module.exports = {
 				use : cssConfig
 			},
 			{
-				test   : /\.js$/,
-				exclude: /node_modules/,
-				use    : 'babel-loader'
+				test: /.(ttf|otf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
+				use : [{
+					loader : 'file-loader',
+					options: {
+						name      : '[name].[ext]',
+						outputPath: 'fonts/',
+						publicPath: '../fonts/'
+					}
+				}]
 			},
 			{
-				test: /\.(jpe?g|png|gif|svg)$/i,
-				use : [
-					'file-loader?name=images/[name].[ext]',
-					'image-webpack-loader?bypassOnDebug'
-				]
+				test: /\.(jpe?g|png|gif|svg|ico)$/i,
+				use : [{
+					loader : 'file-loader',
+					options: {
+						name      : '[name].[ext]',
+						outputPath: 'assets/',
+						publicPath: '../assets/'
+					}
+				}]
 			},
-			{
-				test: /\.(woff2?)$/,
-				use : 'url-loader?limit=10000&name=fonts/[name].[ext]'
-			},
-			{
-				test: /\.(ttf|eot)$/,
-				use : 'file-loader?name=fonts/[name].[ext]'
-			},
+
 			// Bootstrap 4
 			{
 				test: /bootstrap[\\]dist[\\]js[\\]umd[\\]/,
@@ -128,8 +143,32 @@ module.exports = {
 		]
 	},
 	plugins: [
+		new webpack.optimize.CommonsChunkPlugin({
+			names    : ['app', 'jqueryValidation'],
+			minChunks: 2
+		}),
+		new webpack.ProvidePlugin({
+			$              : 'jquery',
+			jQuery         : 'jquery',
+			'window.jQuery': 'jquery',
+			Tether         : 'tether',
+			'window.Tether': 'tether',
+			Popper         : ['popper.js', 'default'],
+			Alert          : 'exports-loader?Alert!bootstrap/js/dist/alert',
+			Button         : 'exports-loader?Button!bootstrap/js/dist/button',
+			Carousel       : 'exports-loader?Carousel!bootstrap/js/dist/carousel',
+			Collapse       : 'exports-loader?Collapse!bootstrap/js/dist/collapse',
+			Dropdown       : 'exports-loader?Dropdown!bootstrap/js/dist/dropdown',
+			Modal          : 'exports-loader?Modal!bootstrap/js/dist/modal',
+			Popover        : 'exports-loader?Popover!bootstrap/js/dist/popover',
+			Scrollspy      : 'exports-loader?Scrollspy!bootstrap/js/dist/scrollspy',
+			Tab            : 'exports-loader?Tab!bootstrap/js/dist/tab',
+			Tooltip        : 'exports-loader?Tooltip!bootstrap/js/dist/tooltip',
+			Util           : 'exports-loader?Util!bootstrap/js/dist/util'
+
+		}),
 		new HtmlWebpackPlugin({
-			title   : 'BxlCare',
+			title   : 'Web template',
 			template: appPaths.src + '\\index.html',
 			favicon : appPaths.src + '\\images\\favicon.ico',
 			minify  : {
