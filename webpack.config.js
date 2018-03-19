@@ -23,14 +23,12 @@ console.log(appPaths.src);
 const cssDev = [
 	'style-loader',
 	'css-loader',
+	'postcss-loader',
 	{
 		loader : 'postcss-loader',
 		options: {
-			plugins: function () {
-				return [
-					require('precss'),
-					require('autoprefixer')
-				];
+			plugins: function() {
+				return [require('autoprefixer')];
 			}
 		}
 	},
@@ -38,7 +36,6 @@ const cssDev = [
 	{
 		loader : 'sass-resources-loader',
 		options: {
-			// Provide path to the file with resources
 			resources: ['./src/resources.scss']
 		}
 	}
@@ -51,13 +48,14 @@ const cssProd = ExtractTextPlugin.extract({
 		{
 			loader : 'postcss-loader',
 			options: {
-				sourceMap: 'inline'
+				plugins: function() {
+					return [require('autoprefixer')];
+				}
 			}
-		},
+		},	
 		{
 			loader : 'sass-resources-loader',
 			options: {
-				// Provide path to the file with resources
 				resources: ['./src/resources.scss']
 			}
 		}
@@ -88,22 +86,24 @@ const servProd = {
 const cssConfig    = isProd ? cssProd : cssDev;
 const serverConfig = isProd ? servProd : servDev;
 
+const devtoolConfig = isProd ? 'inline' : 'cheap-eval-source-map ';
+
+
 const bootstrapConfig = isProd
 	? bootstrapEntryPoints.prod
-	:                             bootstrapEntryPoints.dev;
+	:                   bootstrapEntryPoints.dev;
 
 module.exports = {
 	entry: {
 		app             : appPaths.src + '/app.js',
 		jqueryValidation: ['jquery-validation', 'jquery-validation-unobtrusive'],
 		bootstrap       : bootstrapConfig
-		// jqueryValidation: ['jquery-validation', 'jquery-validation-unobtrusive'],
-		// app             : appPaths.src + '/app.js'
 	},
 	output: {
 		path    : appPaths.dist,
 		filename: 'js/[name].bundle.js'
 	},
+	devtool: devtoolConfig,
 	// devtool  : devtoolConfig,
 	devServer: serverConfig,
 	module   : {
@@ -114,25 +114,29 @@ module.exports = {
 			},
 			{
 				test: /.(ttf|otf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
-				use : [{
-					loader : 'file-loader',
-					options: {
-						name      : '[name].[ext]',
-						outputPath: 'fonts/',
-						publicPath: '../fonts/'
+				use : [
+					{
+						loader : 'file-loader',
+						options: {
+							name      : '[name].[ext]',
+							outputPath: 'fonts/',
+							publicPath: '../fonts/'
+						}
 					}
-				}]
+				]
 			},
 			{
 				test: /\.(jpe?g|png|gif|svg|ico)$/i,
-				use : [{
-					loader : 'file-loader',
-					options: {
-						name      : '[name].[ext]',
-						outputPath: 'assets/',
-						publicPath: '../assets/'
+				use : [
+					{
+						loader : 'file-loader',
+						options: {
+							name      : '[name].[ext]',
+							outputPath: 'assets/',
+							publicPath: '../assets/'
+						}
 					}
-				}]
+				]
 			},
 
 			// Bootstrap 4
@@ -165,7 +169,6 @@ module.exports = {
 			Tab            : 'exports-loader?Tab!bootstrap/js/dist/tab',
 			Tooltip        : 'exports-loader?Tooltip!bootstrap/js/dist/tooltip',
 			Util           : 'exports-loader?Util!bootstrap/js/dist/util'
-
 		}),
 		new HtmlWebpackPlugin({
 			title   : 'Web template',
@@ -180,7 +183,7 @@ module.exports = {
 			showErrors: !isProd
 		}),
 		new ExtractTextPlugin({
-			filename : '/css/[name].css',
+			filename : 'css/[name].css',
 			disable  : !isProd,
 			allChunks: true
 		}),
@@ -189,7 +192,12 @@ module.exports = {
 		// Make sure this is after ExtractTextPlugin!
 		new PurifyCSSPlugin({
 			// Give paths to parse for rules. These should be absolute!
-			paths: glob.sync(path.join(__dirname, 'src/*.html'))
+			paths        : glob.sync([path.join(__dirname, 'src/*.html')]),
+			purifyOptions: {
+				info     : true,
+				minify   : isProd,
+				whitelist: [ '*:not*' ]
+			}
 		})
 	]
 };
