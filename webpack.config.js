@@ -1,16 +1,29 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin    = require('extract-text-webpack-plugin');
-const webpack              = require('webpack');
-const path                 = require('path');
-const bootstrapEntryPoints = require('./webpack.bootstrap.config');
-const glob                 = require('glob');
-const PurifyCSSPlugin      = require('purifycss-webpack');
+'use strict';
 
-const isProd = process.env.NODE_ENV === 'production';  //true or false
+// VARIABLES CONFIG
+const path   = require('path');
+const glob   = require('glob-all');
+const isProd = process.env.NODE_ENV === 'production';
+
+const webpack           = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const PurifyCSSPlugin   = require('purifycss-webpack');
+
+const bootstrapEntryPoints = require('./webpack.bootstrap.config');
+
+const appPaths = {
+	src : path.join(__dirname, 'src'),
+	dist: path.join(__dirname, 'dist')
+};
+
+console.log(process.env.NODE_ENV);
+console.log(appPaths.src);
 
 const cssDev = [
 	'style-loader',
 	'css-loader?sourceMap',
+	'postcss-loader',
 	'sass-loader',
 	{
 		loader : 'sass-resources-loader',
@@ -26,6 +39,12 @@ const cssProd = ExtractTextPlugin.extract({
 		'css-loader',
 		'sass-loader',
 		{
+			loader : 'postcss-loader',
+			options: {
+				sourceMap: 'inline'
+			}
+		},
+		{
 			loader : 'sass-resources-loader',
 			options: {
 				// Provide path to the file with resources
@@ -35,7 +54,30 @@ const cssProd = ExtractTextPlugin.extract({
 	],
 	publicPath: '/dist'
 });
-const cssConfig = isProd ? cssProd : cssDev;
+
+// SERVER CONFIG
+
+const servDev = {
+	progress   : true,
+	compress   : false,
+	contentBase: '.',
+	host       : 'localhost',
+	port       : 9000,
+	open       : true,
+	stats      : 'errors-only',
+	hot        : true
+};
+
+const servProd = {
+	progress   : true,
+	compress   : true,
+	contentBase: '.'
+};
+
+// SET CONFIG
+const cssConfig     = isProd ? cssProd : cssDev;
+const serverConfig  = isProd ? servProd : servDev;
+const devtoolConfig = isProd ? 'inline' : 'cheap-eval-source-map';
 
 const bootstrapConfig = isProd
 	? bootstrapEntryPoints.prod
@@ -43,14 +85,16 @@ const bootstrapConfig = isProd
 
 module.exports = {
 	entry: {
-		app      : './src/app.js',
+		app      : appPaths.src + '\\app.js',
 		bootstrap: bootstrapConfig
 	},
 	output: {
-		path    : path.resolve(__dirname, 'dist'),
-		filename: '[name].bundle.js'
+		path    : appPaths.dist,
+		filename: 'js/[name].bundle.js'
 	},
-	module: {
+	devtool  : devtoolConfig,
+	devServer: serverConfig,
+	module   : {
 		rules: [
 			{
 				test: /\.scss$/,
@@ -83,18 +127,18 @@ module.exports = {
 			}
 		]
 	},
-	devServer: {
-		contentBase: path.join(__dirname, 'dist'),
-		compress   : true,
-		hot        : true,
-		open       : true,
-		stats      : 'errors-only'
-	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			title   : 'Project Demo2',
-			hash    : true,
-			template: './src/index.html'
+			title   : 'BxlCare',
+			template: appPaths.src + '\\index.html',
+			favicon : appPaths.src + '\\images\\favicon.ico',
+			minify  : {
+				collapseWhitespace: isProd,
+				minifyJS          : isProd,
+				minifyCSS         : isProd
+			},
+			hash      : isProd,
+			showErrors: !isProd
 		}),
 		new ExtractTextPlugin({
 			filename : '/css/[name].css',
