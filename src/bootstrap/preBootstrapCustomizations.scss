@@ -1,3 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
-@import "~bootswatch/dist/solar/variables";
-$font-family-sans-serif: 'Roboto Condensed', "Helvetica Neue", Arial, sans-serif;
+/* --------------------------------------------------- */
+/* ############### GOOGLE FONTS IMPORT ############### */
+/* --------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
+
+
+@import "../amanda_theme/_variables.scss";
+@import "../amanda_theme/_mixins.scss";
+
+// // Custom mixins for ../amanda_theme/lib styles
+@import "../amanda_theme/lib/mixins";
