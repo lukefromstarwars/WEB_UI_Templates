@@ -1,1 +1,99 @@
-@import '~bootswatch/dist/superhero/bootswatch';
+@import '~bootswatch/dist/cosmo/bootswatch';
+
+// Main
+h1,
+h2,
+h3 {
+    font-family: $font-family-serif;
+}
+
+.btn, .breadcrumb, .badge, th, label{
+    font-family: $font-family-sans-serif-cd; 
+}
+
+
+// Signin & Signup Page
+.am-signin-wrapper,
+.am-signup-wrapper {
+    min-height: 100vh;
+    background-color: $white;
+    // @include gradient-x($dark, darken($dark, 10%));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 0;
+}
+
+.am-signin-box,
+.am-signup-box {
+    > .row {
+        > div {
+            &:first-child {
+                text-align: center;
+                padding: 40px;
+                background-color: $primary;
+                @include gradient-y($primary, darken($primary, 5%));
+                color: $white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                a {
+                    color: $white;
+                    text-decoration: underline;
+                }
+
+                p {
+                    color: rgba($white, 0.5);
+                }
+            }
+
+            &:last-child {
+                padding: 50px;
+                background-color: lighten($primary, 40%);
+            }
+        }
+    }
+
+    p {
+        color: rgba($white, 0.4);
+    }
+
+    h2 {
+        letter-spacing: -1px;
+    }
+    hr {
+        border-color: rgba($white, 0.3);
+    }
+
+    .form-control-label {
+        color: $gray-700;
+    }
+
+    .form-control {
+        border-color: $gray-500;
+
+        &:focus,
+        &:active {
+            border-color: $gray-600;
+        }
+    }
+
+    .btn {
+        background-color: $primary;
+        color: rgba($white, 0.8);
+
+        &:hover,
+        &:focus {
+            background-color: darken($primary, 5%);
+            color: $white;
+        }
+    }
+}
+
+.am-signin-box {
+    width: 700px;
+}
+.am-signup-box {
+    width: 750px;
+}

@@ -21,6 +21,7 @@ const appPaths = {
 
 const fileNames = {
 	index: 'index.html',
+	registration: 'registration.html',
 	login: 'login.html'
 };
 
@@ -58,6 +59,15 @@ const cssProd = ExtractTextPlugin.extract({
 	use: [
 		'css-loader',
 		'sass-loader',
+		'postcss-loader',
+		{
+			loader: 'postcss-loader',
+			options: {
+				plugins: function() {
+					return [require('autoprefixer')];
+				}
+			}
+		},
 		{
 			loader: 'sass-resources-loader',
 			options: {
@@ -221,6 +231,18 @@ module.exports = {
 			title: 'Login',
 			template: appPaths.src + '\\' + fileNames.login,
 			filename: fileNames.login,
+			minify: {
+				collapseWhitespace: false,
+				minifyJS: isProd,
+				minifyCSS: isProd
+			},
+			// hash      : isProd,
+			showErrors: !isProd
+		}),
+		new HtmlWebpackPlugin({
+			title: 'Registration',
+			template: appPaths.src + '\\' + fileNames.registration,
+			filename: fileNames.registration,
 			minify: {
 				collapseWhitespace: false,
 				minifyJS: isProd,

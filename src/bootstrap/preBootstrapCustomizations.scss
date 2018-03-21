@@ -1,7 +1,60 @@
 /* --------------------------------------------------- */
 /* ############### GOOGLE FONTS IMPORT ############### */
 /* --------------------------------------------------- */
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
-@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif|Roboto|Roboto+Condensed|Ubuntu+Mono');
 
-@import '~bootswatch/dist/superhero/variables';
+@import '~bootswatch/dist/cosmo/variables';
+
+$blue: #2780e3;
+$indigo: #6610f2;
+$purple: #613d7c;
+$pink: #e83e8c;
+$red: #ff0039;
+$orange: #f0ad4e;
+$yellow: #ff7518;
+$green: #3fb618;
+$teal: #20c997;
+$cyan: #9954bb;
+
+$primary: $blue;
+$secondary: $gray-800;
+$success: $green;
+$info: $cyan;
+$warning: $yellow;
+$danger: $red;
+$light: $gray-100;
+$dark: $gray-800;
+
+// Options
+
+$enable-rounded: false;
+
+// Body
+
+$body-color: $gray-800;
+
+// Fonts
+$font-family-sans-serif-cd: 'Roboto Condensed', sans-serif;
+$font-family-sans-serif: 'Roboto', sans-serif;
+$font-family-monospace: 'Ubuntu Mono', monospace;
+$font-family-serif: 'Noto Serif', serif;
+$font-family-base: $font-family-sans-serif;
+
+
+$font-size-base: .95rem;
+
+$headings-font-weight: 500;
+$h1-font-size: $font-size-base * 2.5;
+$h2-font-size: $font-size-base * 2;
+$h3-font-size: $font-size-base * 1.6;
+$h4-font-size: $font-size-base * 1.5;
+$h5-font-size: $font-size-base * 1.25;
+$h6-font-size: $font-size-base;
+
+$font-weight-light:           100;
+$font-weight-normal:          200;
+$font-weight-bold:            700;
+
+$font-weight-base:            $font-weight-normal;
+$line-height-base:            1.4;
+
