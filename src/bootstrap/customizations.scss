@@ -1,28 +1,67 @@
-$body-bg:                       #ffffff;
-$body-color:                    #868ba1;
 
-// Border
-$border-radius:                 2px;
+// Signin & Signup Page
+.am-signin-wrapper,
+.am-signup-wrapper {
+  min-height: 100vh;
+  background-color: $primary;
+  @include gradient-x($primary, darken($primary, 10%));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px 0;
+}
 
-// Color
-$orange:                        rgb(226, 132, 8);
+.am-signin-box,
+.am-signup-box {
 
-// Forms elements
-$input-btn-padding-y:           0.65rem;
+  > .row {
+    > div {
+      &:first-child {
+        text-align: center;
+        padding: 40px;
+        background-color: $orange;
+        @include gradient-y($orange, darken($orange, 5%));
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-// Custom Forms
-$ckbox-size:                    16px;
-$rdiobox-size:                  16px;
+        a {
+          color: #fff;
+          text-decoration: underline;
+        }
+      }
 
-// Fonts
-$font-family-roboto:            'Roboto', 'Helvetica Neue', Arial, sans-serif;
-$font-family-lato:              'Lato', 'Helvetica Neue', Arial, sans-serif;
+      &:last-child {
+        padding: 50px;
+        background-color: #fff;
+      }
+    }
+  }
 
-$font-family-base:              $font-family-roboto;
-$font-size-base:                .875rem;
+  h2 { letter-spacing: -1px; }
+  hr { border-color: rgba(#fff,0.5); }
 
-// Links
-$link-hover-decoration:         none;
+  .form-control-label { color: $gray-700; }
 
-// Table
-$table-border-color:            #dee2e6;
+  .form-control {
+    border-color: $gray-500;
+
+    &:focus,
+    &:active { border-color: $gray-600; }
+  }
+
+  .btn {
+    background-color: $primary;
+    color: rgba(#fff,.8);
+
+    &:hover,
+    &:focus {
+      background-color: darken($primary, 5%);
+      color: #fff;
+    }
+  }
+}
+
+.am-signin-box { width: 700px; }
+.am-signup-box { width: 750px; }

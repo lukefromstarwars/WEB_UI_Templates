@@ -1,22 +1,22 @@
 'use strict';
 
 // VARIABLES CONFIG
-const path   = require('path');
-const glob   = require('glob-all');
+const path = require('path');
+const glob = require('glob-all');
 const isProd = process.env.NODE_ENV === 'production';
 
-const webpack           = require('webpack');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const PurifyCSSPlugin   = require('purifycss-webpack');
+const PurifyCSSPlugin = require('purifycss-webpack');
 
 const bootstrapEntryPoints = require('./webpack.bootstrap.config');
 
 const appPaths = {
-	src      : path.join(__dirname, 'src'),
-	img      : path.join(__dirname, 'src/images'),
+	src: path.join(__dirname, 'src'),
+	img: path.join(__dirname, 'src/images'),
 	bootstrap: path.join(__dirname, 'src/bootstrap'),
-	dist     : path.join(__dirname, 'dist')
+	dist: path.join(__dirname, 'dist')
 };
 
 const fileNames = {
@@ -35,10 +35,10 @@ console.log(filePaths.login);
 
 const cssDev = [
 	'style-loader',
-	'css-loader',
+	'css-loader?sourceMap',
 	'postcss-loader',
 	{
-		loader : 'postcss-loader',
+		loader: 'postcss-loader',
 		options: {
 			plugins: function() {
 				return [require('autoprefixer')];
@@ -47,7 +47,7 @@ const cssDev = [
 	},
 	'sass-loader',
 	{
-		loader : 'sass-resources-loader',
+		loader: 'sass-resources-loader',
 		options: {
 			resources: ['./src/resources.scss']
 		}
@@ -55,65 +55,78 @@ const cssDev = [
 ];
 const cssProd = ExtractTextPlugin.extract({
 	fallback: 'style-loader',
-	use     : [
-		{
-			loader : 'css-loader',
-			options: {
-				localIdentName: 'purify_[hash:base64:5]',
-				modules       : true
-			}
-		},
+	use: [
+		'css-loader',
 		'sass-loader',
 		{
-			loader : 'postcss-loader',
-			options: {
-				plugins: function() {
-					return [require('autoprefixer')];
-				}
-			}
-		},
-		{
-			loader : 'sass-resources-loader',
+			loader: 'sass-resources-loader',
 			options: {
 				resources: ['./src/resources.scss']
 			}
 		}
 	],
+	// supposed to make a difference with purifycss but can't see a difference on 21-03-2018
+	// ---------------------------------------------------------------------------------------
+	// use: [
+	// 	{
+	// 		loader: 'css-loader',
+	// 		options: {
+	// 			localIdentName: 'purify_[hash:base64:5]',
+	// 			modules: true
+	// 		}
+	// 	},
+	// 	'sass-loader',
+	// 	{
+	// 		loader: 'postcss-loader',
+	// 		options: {
+	// 			plugins: function() {
+	// 				return [require('autoprefixer')];
+	// 			},
+	// 			sourceMap: true
+	// 		}
+	// 	},
+	// 	{
+	// 		loader: 'sass-resources-loader',
+	// 		options: {
+	// 			resources: ['./src/resources.scss']
+	// 		}
+	// 	}
+	// ],
+	// ---------------------------------------------------------------------------------------
 	publicPath: '/dist'
 });
 
 // SERVER CONFIG
 
 const servDev = {
-	progress   : true,
-	compress   : false,
+	progress: true,
 	contentBase: '.',
-	host       : 'localhost',
-	port       : 9000,
-	open       : true,
-	stats      : 'errors-only',
-	hot        : true
+	host: 'localhost',
+	port: 9000,
+	open: true,
+	stats: 'errors-only',
+	hot: true
 };
 
 const servProd = {
-	progress   : true,
-	compress   : true,
+	progress: true,
+	compress: true,
 	contentBase: '.'
 };
 
 // SET CONFIG
-const cssConfig    = isProd ? cssProd : cssDev;
+const cssConfig = isProd ? cssProd : cssDev;
 const serverConfig = isProd ? servProd : servDev;
 
-const devtoolConfig = isProd ? 'inline' : 'cheap-eval-source-map ';
+const devtoolConfig = isProd ? 'source-map' : 'eval';
 
 const bootstrapConfig = isProd
 	? bootstrapEntryPoints.prod
-	:                     bootstrapEntryPoints.dev;
+	: bootstrapEntryPoints.dev;
 
 module.exports = {
 	entry: {
-		app             : appPaths.src + '/app.js',
+		app: appPaths.src + '/app.js',
 		jqueryValidation: [
 			'jquery-validation',
 			'jquery-validation-unobtrusive'
@@ -121,25 +134,25 @@ module.exports = {
 		bootstrap: bootstrapConfig
 	},
 	output: {
-		path    : appPaths.dist,
+		path: appPaths.dist,
 		filename: 'js/[name].bundle.js'
 	},
 	devtool: devtoolConfig,
 	// devtool  : devtoolConfig,
 	devServer: serverConfig,
-	module   : {
+	module: {
 		rules: [
 			{
 				test: /\.scss$/,
-				use : cssConfig
+				use: cssConfig
 			},
 			{
 				test: /.(ttf|otf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
-				use : [
+				use: [
 					{
-						loader : 'file-loader',
+						loader: 'file-loader',
 						options: {
-							name      : '[name].[ext]',
+							name: '[name].[ext]',
 							outputPath: 'fonts/',
 							publicPath: '../fonts/'
 						}
@@ -148,11 +161,11 @@ module.exports = {
 			},
 			{
 				test: /\.(jpe?g|png|gif|svg|ico)$/i,
-				use : [
+				use: [
 					{
-						loader : 'file-loader',
+						loader: 'file-loader',
 						options: {
-							name      : '[name].[ext]',
+							name: '[name].[ext]',
 							outputPath: 'assets/',
 							publicPath: '../assets/'
 						}
@@ -169,56 +182,56 @@ module.exports = {
 	},
 	plugins: [
 		new webpack.optimize.CommonsChunkPlugin({
-			names    : ['app', 'jqueryValidation'],
+			names: ['app', 'jqueryValidation'],
 			minChunks: 2
 		}),
 		new webpack.ProvidePlugin({
-			$              : 'jquery',
-			jQuery         : 'jquery',
+			$: 'jquery',
+			jQuery: 'jquery',
 			'window.jQuery': 'jquery',
-			Tether         : 'tether',
+			Tether: 'tether',
 			'window.Tether': 'tether',
-			Popper         : ['popper.js', 'default'],
-			Alert          : 'exports-loader?Alert!bootstrap/js/dist/alert',
-			Button         : 'exports-loader?Button!bootstrap/js/dist/button',
-			Carousel       : 'exports-loader?Carousel!bootstrap/js/dist/carousel',
-			Collapse       : 'exports-loader?Collapse!bootstrap/js/dist/collapse',
-			Dropdown       : 'exports-loader?Dropdown!bootstrap/js/dist/dropdown',
-			Modal          : 'exports-loader?Modal!bootstrap/js/dist/modal',
-			Popover        : 'exports-loader?Popover!bootstrap/js/dist/popover',
-			Scrollspy      : 'exports-loader?Scrollspy!bootstrap/js/dist/scrollspy',
-			Tab            : 'exports-loader?Tab!bootstrap/js/dist/tab',
-			Tooltip        : 'exports-loader?Tooltip!bootstrap/js/dist/tooltip',
-			Util           : 'exports-loader?Util!bootstrap/js/dist/util'
+			Popper: ['popper.js', 'default'],
+			Alert: 'exports-loader?Alert!bootstrap/js/dist/alert',
+			Button: 'exports-loader?Button!bootstrap/js/dist/button',
+			Carousel: 'exports-loader?Carousel!bootstrap/js/dist/carousel',
+			Collapse: 'exports-loader?Collapse!bootstrap/js/dist/collapse',
+			Dropdown: 'exports-loader?Dropdown!bootstrap/js/dist/dropdown',
+			Modal: 'exports-loader?Modal!bootstrap/js/dist/modal',
+			Popover: 'exports-loader?Popover!bootstrap/js/dist/popover',
+			Scrollspy: 'exports-loader?Scrollspy!bootstrap/js/dist/scrollspy',
+			Tab: 'exports-loader?Tab!bootstrap/js/dist/tab',
+			Tooltip: 'exports-loader?Tooltip!bootstrap/js/dist/tooltip',
+			Util: 'exports-loader?Util!bootstrap/js/dist/util'
 		}),
 		new HtmlWebpackPlugin({
-			title   : 'Welcome',
+			title: 'Welcome',
 			template: appPaths.src + '\\' + fileNames.index,
 			filename: fileNames.index,
-			favicon : appPaths.src + '\\images\\favicon.ico',
-			minify  : {
+			favicon: appPaths.src + '\\images\\favicon.ico',
+			minify: {
 				collapseWhitespace: false,
-				minifyJS          : isProd,
-				minifyCSS         : isProd
+				minifyJS: isProd,
+				minifyCSS: isProd
 			},
 			// hash      : isProd,
 			showErrors: !isProd
 		}),
 		new HtmlWebpackPlugin({
-			title   : 'Login',
+			title: 'Login',
 			template: appPaths.src + '\\' + fileNames.login,
 			filename: fileNames.login,
-			minify  : {
+			minify: {
 				collapseWhitespace: false,
-				minifyJS          : isProd,
-				minifyCSS         : isProd
+				minifyJS: isProd,
+				minifyCSS: isProd
 			},
 			// hash      : isProd,
 			showErrors: !isProd
 		}),
 		new ExtractTextPlugin({
-			filename : 'css/[name].css',
-			disable  : !isProd,
+			filename: 'css/[name].css',
+			disable: !isProd,
 			allChunks: true
 		}),
 		new webpack.HotModuleReplacementPlugin(),
@@ -226,10 +239,10 @@ module.exports = {
 		// Make sure this is after ExtractTextPlugin!
 		new PurifyCSSPlugin({
 			// Give paths to parse for rules. These should be absolute!
-			paths        : glob.sync([path.join(__dirname, 'src/*.html')]),
+			paths: glob.sync([path.join(__dirname, 'src/*.html')]),
 			purifyOptions: {
-				info     : true,
-				minify   : isProd,
+				info: true,
+				minify: isProd,
 				whitelist: ['*purify*']
 			}
 		})

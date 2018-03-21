@@ -1,2 +1,2 @@
-import './fa/js/fontawesome-all.js';
+// import './fa/js/fontawesome-all.js';
 import './app.scss';
