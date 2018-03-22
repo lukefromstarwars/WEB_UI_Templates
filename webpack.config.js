@@ -135,7 +135,8 @@ const bootstrapConfig = isProd ? bootstrapEntryPoints.prod : bootstrapEntryPoint
 module.exports = {
 	entry: {
 		app: appPaths.src + '/app.js',
-		fa: 'font-awesome/scss/font-awesome.scss',
+		// fa: 'font-awesome/scss/font-awesome.scss',
+		// fa: appPaths.src + '/fa.js',
 		jqueryValidation: ['jquery-validation', 'jquery-validation-unobtrusive'],
 		bootstrap: bootstrapConfig
 	},
@@ -178,11 +179,27 @@ module.exports = {
 				]
 			},
 
-			// font-awesome
-			{
-				test: /font-awesome\.config\.js/,
-				use: [{ loader: 'style-loader' }, { loader: 'font-awesome-loader' }]
-			},
+			// // font-awesome
+			// {
+			// 	test: /font-awesome\.config\.js/,
+			// 	use: [{ loader: 'style-loader' }, { loader: 'font-awesome-loader' }]
+			// },
+
+			// fa
+			// {
+			// 	test: /\.js$/,
+			// 	exclude: /node_modules/,
+			// 	use: {
+			// 		loader: 'babel-loader',
+			// 		options: {
+			// 			presets: ['env'],
+			// 			babelrc: false,
+			// 			cacheDirectory: true,
+			// 			plugins: [
+			// 				'transform-runtime']
+			// 		}
+			// 	}
+			// },
 
 			// Bootstrap 4
 			{
@@ -190,6 +207,14 @@ module.exports = {
 				loader: 'imports-loader?jQuery=jquery'
 			}
 		]
+	},
+	resolve: {
+		extensions: ['.js'],
+		modules: [path.resolve(__dirname, 'scripts'), 'node_modules'],
+		alias: {
+			'@fortawesome/fontawesome-free-solid$': '@fortawesome/fontawesome-free-solid/shakable.es.js',
+			'@fortawesome/fontawesome-free-regular$': '@fortawesome/fontawesome-free-regular/shakable.es.js'
+		}
 	},
 	plugins: [
 		new webpack.optimize.CommonsChunkPlugin({
