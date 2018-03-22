@@ -1,2 +1,2 @@
-import './fa';
+// import './fa';
 import './app.scss';

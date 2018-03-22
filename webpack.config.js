@@ -136,7 +136,7 @@ module.exports = {
 	entry: {
 		app: appPaths.src + '/app.js',
 		// fa: 'font-awesome/scss/font-awesome.scss',
-		// fa: appPaths.src + '/fa.js',
+		fa: appPaths.src + '/fa.js',
 		jqueryValidation: ['jquery-validation', 'jquery-validation-unobtrusive'],
 		bootstrap: bootstrapConfig
 	},
