@@ -130,17 +130,13 @@ const serverConfig = isProd ? servProd : servDev;
 
 const devtoolConfig = isProd ? 'source-map' : 'eval';
 
-const bootstrapConfig = isProd
-	? bootstrapEntryPoints.prod
-	: bootstrapEntryPoints.dev;
+const bootstrapConfig = isProd ? bootstrapEntryPoints.prod : bootstrapEntryPoints.dev;
 
 module.exports = {
 	entry: {
 		app: appPaths.src + '/app.js',
-		jqueryValidation: [
-			'jquery-validation',
-			'jquery-validation-unobtrusive'
-		],
+		fa: 'font-awesome/scss/font-awesome.scss',
+		jqueryValidation: ['jquery-validation', 'jquery-validation-unobtrusive'],
 		bootstrap: bootstrapConfig
 	},
 	output: {
@@ -148,7 +144,6 @@ module.exports = {
 		filename: 'js/[name].bundle.js'
 	},
 	devtool: devtoolConfig,
-	// devtool  : devtoolConfig,
 	devServer: serverConfig,
 	module: {
 		rules: [
@@ -183,9 +178,15 @@ module.exports = {
 				]
 			},
 
+			// font-awesome
+			{
+				test: /font-awesome\.config\.js/,
+				use: [{ loader: 'style-loader' }, { loader: 'font-awesome-loader' }]
+			},
+
 			// Bootstrap 4
 			{
-				test: /bootstrap[\\]dist[\\]js[\\]umd[\\]/,
+				test: /bootstrap\/dist\/js\/umd\//,
 				loader: 'imports-loader?jQuery=jquery'
 			}
 		]
