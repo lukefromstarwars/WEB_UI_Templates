@@ -13,12 +13,17 @@ const GoogleFontsPlugin = require("google-fonts-webpack-plugin")
 
 const bootstrapEntryPoints = require('./webpack.bootstrap.config');
 
-const appPaths = {
-	src: path.join(__dirname, 'src'),
+const srcPaths = {
+	root: path.join(__dirname, 'src'),
 	img: path.join(__dirname, 'src/images'),
-	bootstrap: path.join(__dirname, 'src/bootstrap'),
-	dist: path.join(__dirname, 'dist')
+	bootstrap: path.join(__dirname, 'src/bootstrap')
 };
+
+const distPaths = {
+	root: path.join(__dirname, 'dist'),
+	fonts: path.join(__dirname, 'dist/fonts'),
+	css: path.join(__dirname, 'dist/css')
+}
 
 const fileNames = {
 	index: 'index.html',
@@ -26,14 +31,14 @@ const fileNames = {
 	login: 'login.html'
 };
 
-const filePaths = {
-	index: appPaths.src + '\\' + fileNames.index,
-	login: appPaths.src + '\\' + fileNames.login
-};
+// const filePaths = {
+// 	index: srcPaths.root + '\\' + fileNames.index,
+// 	login: srcPaths.root + '\\' + fileNames.login
+// };
 
 console.log(process.env.NODE_ENV);
-console.log(appPaths.src);
-console.log(appPaths.dist);
+console.log(srcPaths.root);
+console.log(srcPaths.root);
 
 
 const cssDev = [
@@ -107,14 +112,14 @@ const bootstrapConfig = isProd ? bootstrapEntryPoints.prod : bootstrapEntryPoint
 
 module.exports = {
 	entry: {
-		app: appPaths.src + '/app.js',
+		app: srcPaths.root + '/app.js',
 		// fa: '@fortawesome/fontawesome-free-webfonts/scss/fontawesome.scss', 
-		// fa: appPaths.src + '/fa.js',
+		// fa: srcPaths.src + '/fa.js',
 		jqueryValidation: ['jquery-validation', 'jquery-validation-unobtrusive'],
 		bootstrap: bootstrapConfig
 	},
 	output: {
-		path: appPaths.dist,
+		path: distPaths.root,
 		filename: 'js/[name].bundle.js'
 	},
 	devtool: devtoolConfig,
@@ -222,15 +227,16 @@ module.exports = {
 				{ family: "Roboto Condensed" },
 				{ family: "Ubuntu" },
 			],
-			path: 'fonts/'
-			/* ...options */
+			path: 'fonts/',
+			minify: true,
+			filename: 'css/fonts.css'
 		}),
 
 		new HtmlWebpackPlugin({
 			title: 'Welcome',
-			template: appPaths.src + '\\' + fileNames.index,
+			template: srcPaths.root + '/' + fileNames.index,
 			filename: fileNames.index,
-			favicon: appPaths.src + '\\images\\favicon.ico',
+			favicon: srcPaths.root + '/images/favicon.ico',
 			minify: {
 				collapseWhitespace: false,
 				minifyJS: isProd,
@@ -242,7 +248,7 @@ module.exports = {
 
 		new HtmlWebpackPlugin({
 			title: 'Login',
-			template: appPaths.src + '\\' + fileNames.login,
+			template: srcPaths.root + '\\' + fileNames.login,
 			filename: fileNames.login,
 			minify: {
 				collapseWhitespace: false,
@@ -255,7 +261,7 @@ module.exports = {
 
 		new HtmlWebpackPlugin({
 			title: 'Registration',
-			template: appPaths.src + '\\' + fileNames.registration,
+			template: srcPaths.root + '\\' + fileNames.registration,
 			filename: fileNames.registration,
 			minify: {
 				collapseWhitespace: false,

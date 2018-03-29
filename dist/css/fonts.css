@@ -1,0 +1,59 @@
+/* === Roboto - regular */
+@font-face {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	src: url("./../fonts/Roboto-Regular.eot");
+	src: local("Roboto"),
+		local("Roboto-Regular"),
+		url("./../fonts/Roboto-Regular.eot") format("embedded-opentype"),
+		url("./../fonts/Roboto-Regular.woff2") format("woff2"),
+		url("./../fonts/Roboto-Regular.woff") format("woff"),
+		url("./../fonts/Roboto-Regular.ttf") format("truetype"),
+		url("./../fonts/Roboto-Regular.svg") format("svg");
+}
+
+/* === Roboto Condensed - regular */
+@font-face {
+	font-family: 'Roboto Condensed';
+	font-style: normal;
+	font-weight: 400;
+	src: url("./../fonts/RobotoCondensed-Regular.eot");
+	src: local("Roboto Condensed"),
+		local("RobotoCondensed-Regular"),
+		url("./../fonts/RobotoCondensed-Regular.eot") format("embedded-opentype"),
+		url("./../fonts/RobotoCondensed-Regular.woff2") format("woff2"),
+		url("./../fonts/RobotoCondensed-Regular.woff") format("woff"),
+		url("./../fonts/RobotoCondensed-Regular.ttf") format("truetype"),
+		url("./../fonts/RobotoCondensed-Regular.svg") format("svg");
+}
+
+/* === Source Sans Pro - regular */
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 400;
+	src: url("./../fonts/SourceSansPro-Regular.eot");
+	src: local("Source Sans Pro Regular"),
+		local("SourceSansPro-Regular"),
+		url("./../fonts/SourceSansPro-Regular.eot") format("embedded-opentype"),
+		url("./../fonts/SourceSansPro-Regular.woff2") format("woff2"),
+		url("./../fonts/SourceSansPro-Regular.woff") format("woff"),
+		url("./../fonts/SourceSansPro-Regular.ttf") format("truetype"),
+		url("./../fonts/SourceSansPro-Regular.svg") format("svg");
+}
+
+/* === Ubuntu - regular */
+@font-face {
+	font-family: 'Ubuntu';
+	font-style: normal;
+	font-weight: 400;
+	src: url("./../fonts/Ubuntu-Regular.eot");
+	src: local("Ubuntu Regular"),
+		local("Ubuntu-Regular"),
+		url("./../fonts/Ubuntu-Regular.eot") format("embedded-opentype"),
+		url("./../fonts/Ubuntu-Regular.woff2") format("woff2"),
+		url("./../fonts/Ubuntu-Regular.woff") format("woff"),
+		url("./../fonts/Ubuntu-Regular.ttf") format("truetype"),
+		url("./../fonts/Ubuntu-Regular.svg") format("svg");
+}
