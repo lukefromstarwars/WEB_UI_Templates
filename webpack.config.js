@@ -9,6 +9,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const PurifyCSSPlugin = require('purifycss-webpack');
+const GoogleFontsPlugin = require("google-fonts-webpack-plugin")
 
 const bootstrapEntryPoints = require('./webpack.bootstrap.config');
 
@@ -32,7 +33,8 @@ const filePaths = {
 
 console.log(process.env.NODE_ENV);
 console.log(appPaths.src);
-console.log(filePaths.login);
+console.log(appPaths.dist);
+
 
 const cssDev = [
 	'style-loader',
@@ -54,6 +56,7 @@ const cssDev = [
 		}
 	}
 ];
+
 const cssProd = ExtractTextPlugin.extract({
 	fallback: 'style-loader',
 	use: [
@@ -75,39 +78,10 @@ const cssProd = ExtractTextPlugin.extract({
 			}
 		}
 	],
-	// supposed to make a difference with purifycss but can't see a difference on 21-03-2018
-	// ---------------------------------------------------------------------------------------
-	// use: [
-	// 	{
-	// 		loader: 'css-loader',
-	// 		options: {
-	// 			localIdentName: 'purify_[hash:base64:5]',
-	// 			modules: true
-	// 		}
-	// 	},
-	// 	'sass-loader',
-	// 	{
-	// 		loader: 'postcss-loader',
-	// 		options: {
-	// 			plugins: function() {
-	// 				return [require('autoprefixer')];
-	// 			},
-	// 			sourceMap: true
-	// 		}
-	// 	},
-	// 	{
-	// 		loader: 'sass-resources-loader',
-	// 		options: {
-	// 			resources: ['./src/resources.scss']
-	// 		}
-	// 	}
-	// ],
-	// ---------------------------------------------------------------------------------------
 	publicPath: '/dist'
 });
 
 // SERVER CONFIG
-
 const servDev = {
 	progress: true,
 	contentBase: '.',
@@ -115,7 +89,8 @@ const servDev = {
 	port: 9000,
 	open: true,
 	stats: 'errors-only',
-	hot: true
+	hot: true,
+	openPage: fileNames.login
 };
 
 const servProd = {
@@ -127,16 +102,14 @@ const servProd = {
 // SET CONFIG
 const cssConfig = isProd ? cssProd : cssDev;
 const serverConfig = isProd ? servProd : servDev;
-
 const devtoolConfig = isProd ? 'source-map' : 'eval';
-
 const bootstrapConfig = isProd ? bootstrapEntryPoints.prod : bootstrapEntryPoints.dev;
 
 module.exports = {
 	entry: {
 		app: appPaths.src + '/app.js',
-		// fa: 'font-awesome/scss/font-awesome.scss',
-		fa: appPaths.src + '/fa.js',
+		// fa: '@fortawesome/fontawesome-free-webfonts/scss/fontawesome.scss', 
+		// fa: appPaths.src + '/fa.js',
 		jqueryValidation: ['jquery-validation', 'jquery-validation-unobtrusive'],
 		bootstrap: bootstrapConfig
 	},
@@ -221,6 +194,7 @@ module.exports = {
 			names: ['app', 'jqueryValidation'],
 			minChunks: 2
 		}),
+
 		new webpack.ProvidePlugin({
 			$: 'jquery',
 			jQuery: 'jquery',
@@ -240,6 +214,18 @@ module.exports = {
 			Tooltip: 'exports-loader?Tooltip!bootstrap/js/dist/tooltip',
 			Util: 'exports-loader?Util!bootstrap/js/dist/util'
 		}),
+
+		new GoogleFontsPlugin({
+			fonts: [
+				{ family: "Source Sans Pro" },
+				{ family: "Roboto" },
+				{ family: "Roboto Condensed" },
+				{ family: "Ubuntu" },
+			],
+			path: 'fonts/'
+			/* ...options */
+		}),
+
 		new HtmlWebpackPlugin({
 			title: 'Welcome',
 			template: appPaths.src + '\\' + fileNames.index,
@@ -253,6 +239,7 @@ module.exports = {
 			// hash      : isProd,
 			showErrors: !isProd
 		}),
+
 		new HtmlWebpackPlugin({
 			title: 'Login',
 			template: appPaths.src + '\\' + fileNames.login,
@@ -265,6 +252,7 @@ module.exports = {
 			// hash      : isProd,
 			showErrors: !isProd
 		}),
+
 		new HtmlWebpackPlugin({
 			title: 'Registration',
 			template: appPaths.src + '\\' + fileNames.registration,
@@ -277,13 +265,17 @@ module.exports = {
 			// hash      : isProd,
 			showErrors: !isProd
 		}),
+
 		new ExtractTextPlugin({
 			filename: 'css/[name].css',
 			disable: !isProd,
 			allChunks: true
 		}),
+
 		new webpack.HotModuleReplacementPlugin(),
+
 		new webpack.NamedModulesPlugin(),
+
 		// Make sure this is after ExtractTextPlugin!
 		new PurifyCSSPlugin({
 			// Give paths to parse for rules. These should be absolute!
