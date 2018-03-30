@@ -9,7 +9,7 @@ body {
 .progress {
     @include box-shadow(none);
     .progress-bar {
-        font-size: 8px;
+        font-size  : 8px;
         line-height: 8px;
     }
 }
@@ -33,13 +33,13 @@ label {
 // Signin & Signup Page
 .am-signin-wrapper,
 .am-signup-wrapper {
-  min-height: 100vh;
+  min-height      : 100vh;
   background-color: $white;
   // @include gradient-x($dark, darken($dark, 10%));
-  display: flex;
-  align-items: center;
+  display        : flex;
+  align-items    : center;
   justify-content: center;
-  padding: 25px 0;
+  padding        : 25px 0;
 }
 
 .am-signin-box,
@@ -47,17 +47,17 @@ label {
   > .row {
     > div {
       &:first-child {
-        text-align: center;
-        padding: 40px;
+        text-align      : center;
+        padding         : 40px;
         background-color: $primary;
         @include gradient-y($primary, darken($primary, 5%));
-        color: $white;
-        display: flex;
-        align-items: center;
+        color          : $white;
+        display        : flex;
+        align-items    : center;
         justify-content: center;
 
         a {
-          color: $white;
+          color          : $white;
           text-decoration: underline;
         }
 
@@ -67,7 +67,7 @@ label {
       }
 
       &:last-child {
-        padding: 50px;
+        padding         : 50px;
         background-color: lighten($primary, 40%);
       }
     }
@@ -96,12 +96,12 @@ label {
 
   .btn {
     background-color: $primary;
-    color: rgba($white, 0.8);
+    color           : rgba($white, 0.8);
 
     &:hover,
     &:focus {
       background-color: darken($primary, 5%);
-      color: $white;
+      color           : $white;
     }
   }
 }
