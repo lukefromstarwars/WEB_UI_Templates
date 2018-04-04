@@ -1,0 +1,130 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>
+        Consent
+    </title>
+<link href="css/app.css" rel="stylesheet"><link href="css/bootstrap.css" rel="stylesheet"><link href="css/fonts.css" rel="stylesheet"></head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+        <a class="navbar-brand" href="/">
+            AddiBRU
+        </a>
+        <button aria-controls="navbarResponsive" aria-expanded="false" aria-label="Hide/Show navigation" class="navbar-toggler" data-target="#navbarResponsive" data-toggle="collapse" type="button">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarResponsive">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/Account/Logout">
+                        <span class="navbar-text text-light">Bob Smith (</span> Logout
+                        <span class="navbar-text text-light">)</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="pt-4">
+        <div class="container pt-5">
+
+            <div class="page-consent">
+                <div class="row page-header">
+                    <div class="col-sm-10">
+                        <h1>
+                            MVC Client
+                            <small>is requesting your permission</small>
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-8">
+
+
+                        <form class="consent-form" action="/consent" method="post" novalidate="novalidate">
+                            <input type="hidden" id="ReturnUrl" name="ReturnUrl" value="/connect/authorize/callback?client_id=mvc&amp;redirect_uri=http%3A%2F%2Flocalhost%3A5002%2Fsignin-oidc&amp;response_type=code%20id_token&amp;scope=openid%20profile%20api1%20offline_access&amp;response_mode=form_post&amp;nonce=636584209717870853.MTJlMzFlYjctMmZjOC00ZmYwLWI3NDctYjg0ZmQxNDk4NTk5NWE5NTE1NmMtNzk4NC00MzVlLWFhZTAtMDgxZjVjZmJlMWM2&amp;state=CfDJ8Fuu-2mDugxOhjgdKZS4X1T6faoD0PKntRCbw8tz1vwRxv_uUvN5bh9iKOYU1rsr3X6m8WPIpvsAjY-eQvE6x0xiZv0CaWaw4awr6-IhnfWlNQhw1WbHotmu_0cE1rLiGm6XCaO8yWfhSKzYj_q0jt6uNoSiAlSSTLXcoGlAc5h7VLBkeZ2M3_U7uKgGR_hxor-6-JgN7tTAkR9a4yf73VWsR61yTMfTKd4xRvyU0LDhQ0kjwABGFQvyzbpp8pIYedULkifg4D8dHARw3Yh1eDHi5QeojmkojheAkB5TeYAkj7FaNjTPQiASNhTg-Cr_kHd6sHNbK89GUG7WiyM0oFo&amp;x-client-SKU=ID_NET&amp;x-client-ver=2.1.4.0">
+
+                            <div>Uncheck the permissions you do not wish to grant.</div>
+
+                            <div class="panel panel-default consent-buttons">
+                                <div class="panel-heading">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    Personal Information
+                                </div>
+                                <ul class="list-group">
+
+                                    <li class="list-group-item">
+                                        <label>
+                                            <input class="consent-scopecheck" type="checkbox" name="ScopesConsented" id="scopes_openid" value="openid" checked="checked" disabled="disabled">
+                                            <input type="hidden" name="ScopesConsented" value="openid">
+                                            <strong>Your user identifier</strong>
+                                        </label>
+                                        <span>
+                                            <em>(required)</em>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label>
+                                            <input class="consent-scopecheck" type="checkbox" name="ScopesConsented" id="scopes_profile" value="profile" checked="checked">
+                                            <strong>User profile</strong>
+                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                        </label>
+                                        <div class="consent-description">
+                                            <label for="scopes_profile">Your user profile information (first name, last name, etc.)</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span class="glyphicon glyphicon-tasks"></span>
+                                    Application Access
+                                </div>
+                                <ul class="list-group">
+
+                                    <li class="list-group-item">
+                                        <label>
+                                            <input class="consent-scopecheck" type="checkbox" name="ScopesConsented" id="scopes_api1" value="api1" checked="checked">
+                                            <strong>My API</strong>
+                                        </label>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label>
+                                            <input class="consent-scopecheck" type="checkbox" name="ScopesConsented" id="scopes_offline_access" value="offline_access" checked="checked">
+                                            <strong>Offline Access</strong>
+                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                        </label>
+                                        <div class="consent-description">
+                                            <label for="scopes_offline_access">Access to your applications and resources, even when you are offline</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="consent-remember">
+                                <label>
+                                    <input class="consent-scopecheck" type="checkbox" checked="checked" data-val="true" data-val-required="The RememberConsent field is required." id="RememberConsent" name="RememberConsent" value="true">
+                                    <strong>Remember My Decision</strong>
+                                </label>
+                            </div>
+
+                            <div class="consent-buttons">
+                                <button name="button" value="yes" class="btn btn-primary" autofocus="">Yes, Allow</button>
+                                <button name="button" value="no" class="btn">No, Do Not Allow</button>
+                            </div>
+                            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Fuu-2mDugxOhjgdKZS4X1SDfHxjColFXoKZXnSuTIBLL2kGLUgMlICljmFu6raXf9N-59UEA9x8vm7lkcPPE3GWfXnct-DYi6Qrp3Jr1cWnkuP97L4xbF2_KdHRmwL5_K00A_K91qHGocqUZeCZgvysItFRDMEUs3xKiuLMPak6g7HAGdODOhsPfQylR4pWWA">
+                            <input name="RememberConsent" type="hidden" value="false">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="js/jqueryValidation.bundle.js"></script><script type="text/javascript" src="js/app.bundle.js"></script><script type="text/javascript" src="js/bootstrap.bundle.js"></script></body>
+
+</html>

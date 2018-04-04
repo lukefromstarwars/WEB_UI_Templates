@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dd": "cross-env NODE_ENV=development webpack --color",
-    "ddw": "cross-env NODE_ENV=development webpack-dev-server",
+    "ddw": "cross-env NODE_ENV=development webpack-dev-server -w",
     "pp": "npm run cc && cross-env NODE_ENV=production webpack -p",
     "cc": "rimraf ./dist/*"
   },
